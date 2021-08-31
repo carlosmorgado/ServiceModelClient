@@ -1,0 +1,66 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31612.314
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A9930D79-46A8-4F37-8952-43532357ACB2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceModelClientFactory", "src\ServiceModelClientFactory\ServiceModelClientFactory.csproj", "{C8F7BE05-F7F3-4498-980A-086AE2CB4AD0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceModelClientFactory.Abstractions", "src\ServiceModelClientFactory.Abstractions\ServiceModelClientFactory.Abstractions.csproj", "{119F99E8-9B87-43A1-959D-EB4BBC38A429}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{72132AEB-8C72-4DD2-89F2-08981C17E56E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceModelClientFactory.Tests", "tests\ServiceModelClientFactory.Tests\ServiceModelClientFactory.Tests.csproj", "{89AC81FB-98D0-46FA-8303-FB82B0F28569}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution items", "{D98163E7-0463-4686-BBAA-F28AB54239BF}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		CHECKLIST.md = CHECKLIST.md
+		CODE-OF-CONDUCT.md = CODE-OF-CONDUCT.md
+		CONTRIBUTING.md = CONTRIBUTING.md
+		LICENSE = LICENSE
+		README.md = README.md
+		THIRD-PARTY-NOTICES = THIRD-PARTY-NOTICES
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceModel.Client.OpenIDConnect", "src\ServiceModel.Client.OpenIDConnect\ServiceModel.Client.OpenIDConnect.csproj", "{3D2DB1D9-FAE6-4BF6-9B11-6A4D65EFD39A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C8F7BE05-F7F3-4498-980A-086AE2CB4AD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8F7BE05-F7F3-4498-980A-086AE2CB4AD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8F7BE05-F7F3-4498-980A-086AE2CB4AD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8F7BE05-F7F3-4498-980A-086AE2CB4AD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{119F99E8-9B87-43A1-959D-EB4BBC38A429}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{119F99E8-9B87-43A1-959D-EB4BBC38A429}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{119F99E8-9B87-43A1-959D-EB4BBC38A429}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{119F99E8-9B87-43A1-959D-EB4BBC38A429}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89AC81FB-98D0-46FA-8303-FB82B0F28569}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89AC81FB-98D0-46FA-8303-FB82B0F28569}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89AC81FB-98D0-46FA-8303-FB82B0F28569}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89AC81FB-98D0-46FA-8303-FB82B0F28569}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D2DB1D9-FAE6-4BF6-9B11-6A4D65EFD39A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D2DB1D9-FAE6-4BF6-9B11-6A4D65EFD39A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D2DB1D9-FAE6-4BF6-9B11-6A4D65EFD39A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D2DB1D9-FAE6-4BF6-9B11-6A4D65EFD39A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C8F7BE05-F7F3-4498-980A-086AE2CB4AD0} = {A9930D79-46A8-4F37-8952-43532357ACB2}
+		{119F99E8-9B87-43A1-959D-EB4BBC38A429} = {A9930D79-46A8-4F37-8952-43532357ACB2}
+		{89AC81FB-98D0-46FA-8303-FB82B0F28569} = {72132AEB-8C72-4DD2-89F2-08981C17E56E}
+		{3D2DB1D9-FAE6-4BF6-9B11-6A4D65EFD39A} = {A9930D79-46A8-4F37-8952-43532357ACB2}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6F7488E2-C3FA-446D-AFFB-34260C7B3F28}
+	EndGlobalSection
+EndGlobal
