@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
@@ -17,6 +16,21 @@ namespace Microsoft.Extensions.DependencyInjection
             Action<IServiceProvider, ServiceEndpoint>? configure = null)
             where TChannel : class
         {
+            if (services is null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
+            if (binding is null)
+            {
+                throw new ArgumentNullException(nameof(binding));
+            }
+
+            if (remoteAddress is null)
+            {
+                throw new ArgumentNullException(nameof(remoteAddress));
+            }
+
             //
             // Core abstractions
             //
@@ -25,7 +39,7 @@ namespace Microsoft.Extensions.DependencyInjection
             // Register channel factory
             if (configure is null)
             {
-                services.TryAddSingleton(serviceProvider =>new ChannelFactory<TChannel>(binding, remoteAddress));
+                services.TryAddSingleton(serviceProvider => new ChannelFactory<TChannel>(binding, remoteAddress));
             }
             else
             {
