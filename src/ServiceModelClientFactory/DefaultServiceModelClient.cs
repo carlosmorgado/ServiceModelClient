@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 
 namespace Morgados.ServiceModelClientFactory
 {
@@ -16,7 +17,17 @@ namespace Morgados.ServiceModelClientFactory
             this.isDisposed = false;
         }
 
-        public TChannel Channel => this.channel ??= this.channelFactory.CreateChannel();
+        public TChannel Channel
+        {
+            get
+            {
+                var channel = (IChannel)(this.channel ??= this.channelFactory.CreateChannel());
+
+                channel.Open();
+
+                return this.channel;
+            }
+        }
 
         public void Dispose()
         {

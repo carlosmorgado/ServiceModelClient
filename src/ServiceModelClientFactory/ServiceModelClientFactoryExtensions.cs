@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
@@ -13,7 +14,7 @@ namespace Microsoft.Extensions.DependencyInjection
             this IServiceCollection services,
             Binding binding,
             EndpointAddress remoteAddress,
-            Action<IServiceProvider, ServiceEndpoint> configure = null)
+            Action<IServiceProvider, ServiceEndpoint>? configure = null)
             where TChannel : class
         {
             //
@@ -22,10 +23,22 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddSingleton<IServiceModelClientFactory, DefaultServiceModelClientFactory>();
 
             // Register channel factory
+            if (configure is not null)
+            {
+                services.TryAddEnumerable(ServiceDescriptor.Singleton(configure));
+            }
+
             services.TryAddSingleton(serviceProvider =>
             {
                 var factory = new ChannelFactory<TChannel>(binding, remoteAddress);
-                configure?.Invoke(serviceProvider, factory.Endpoint);
+
+                var configurations = serviceProvider
+                    .GetRequiredService<IEnumerable<Action<IServiceProvider, ServiceEndpoint>>>();
+
+                foreach (var action in configurations)
+                {
+                    action(serviceProvider, factory.Endpoint);
+                }
 
                 return factory;
             });
