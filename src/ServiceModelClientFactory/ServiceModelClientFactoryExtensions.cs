@@ -23,13 +23,19 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddSingleton<IServiceModelClientFactory, DefaultServiceModelClientFactory>();
 
             // Register channel factory
-            services.TryAddSingleton(serviceProvider =>
+            if (configure is null)
             {
-                var channelFactory = new ChannelFactory<TChannel>(binding, remoteAddress);
-                configure?.Invoke(serviceProvider, channelFactory.Endpoint);
-
-                return channelFactory;
-            });
+                services.TryAddSingleton(serviceProvider =>new ChannelFactory<TChannel>(binding, remoteAddress));
+            }
+            else
+            {
+                services.TryAddSingleton(serviceProvider =>
+                {
+                    var channelFactory = new ChannelFactory<TChannel>(binding, remoteAddress);
+                    configure?.Invoke(serviceProvider, channelFactory.Endpoint);
+                    return channelFactory;
+                });
+            }
 
             // Register service model client
             services.TryAddTransient(
