@@ -17,17 +17,7 @@ namespace Morgados.ServiceModelClientFactory
             this.isDisposed = false;
         }
 
-        public TChannel Channel
-        {
-            get
-            {
-                var channel = (IChannel)(this.channel ??= this.channelFactory.CreateChannel());
-
-                channel.Open();
-
-                return this.channel;
-            }
-        }
+        public TChannel Channel => this.channel ??= this.CreateChannel();
 
         public void Dispose()
         {
@@ -47,6 +37,13 @@ namespace Morgados.ServiceModelClientFactory
 
             this.channel = null!;
             this.isDisposed = true;
+        }
+
+        private TChannel CreateChannel()
+        {
+            var channel = this.channelFactory.CreateChannel();
+            ((IChannel)channel).Open();
+            return channel;
         }
     }
 }
