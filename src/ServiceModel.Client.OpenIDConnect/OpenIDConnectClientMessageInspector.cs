@@ -9,10 +9,10 @@ namespace Morgados.ServiceModel.Client.OpenIDConnect
 {
     public sealed class OpenIDConnectClientMessageInspector : IClientMessageInspector
     {
-        private readonly Func<HttpClient> httpClientFactory;
+        private readonly Func<IOpenIDConnectClient> openIDConnectClientFactory;
 
-        public OpenIDConnectClientMessageInspector(Func<HttpClient> httpClientFactory)
-            => this.httpClientFactory = httpClientFactory;
+        public OpenIDConnectClientMessageInspector(Func<IOpenIDConnectClient> openIDConnectClientFactory)
+            => this.openIDConnectClientFactory = openIDConnectClientFactory;
 
         public object? BeforeSendRequest(ref Message request, IClientChannel channel)
         {
@@ -21,7 +21,7 @@ namespace Morgados.ServiceModel.Client.OpenIDConnect
 
             try
             {
-                this.httpClientFactory().GetAsync("").GetAwaiter().GetResult();
+                var token = this.openIDConnectClientFactory().GetTokenAsync(string.Empty).GetAwaiter().GetResult();
 
                 if (!(request.Properties.TryGetValue(HttpRequestMessageProperty.Name, out var property)
                     && property is HttpRequestMessageProperty httprequestMessageProperty))
@@ -30,7 +30,7 @@ namespace Morgados.ServiceModel.Client.OpenIDConnect
                     request.Properties[HttpRequestMessageProperty.Name] = httprequestMessageProperty;
                 }
 
-                httprequestMessageProperty.Headers["Authentication"] = "Bearer";
+                httprequestMessageProperty.Headers["Authentication"] = $"Bearer {token}";
 
                 return null;
             }

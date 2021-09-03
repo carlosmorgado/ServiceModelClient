@@ -26,7 +26,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution 
 		THIRD-PARTY-NOTICES = THIRD-PARTY-NOTICES
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceModel.Client.OpenIDConnect", "src\ServiceModel.Client.OpenIDConnect\ServiceModel.Client.OpenIDConnect.csproj", "{3D2DB1D9-FAE6-4BF6-9B11-6A4D65EFD39A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceModel.Client.OpenIDConnect", "src\ServiceModel.Client.OpenIDConnect\ServiceModel.Client.OpenIDConnect.csproj", "{3D2DB1D9-FAE6-4BF6-9B11-6A4D65EFD39A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceModel.Client.OpenIDConnect.Abstractions", "src\ServiceModel.Client.OpenIDConnect.Abstractions\ServiceModel.Client.OpenIDConnect.Abstractions.csproj", "{775C13FA-24BA-479E-B2DA-2C55E9CF20C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +52,10 @@ Global
 		{3D2DB1D9-FAE6-4BF6-9B11-6A4D65EFD39A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D2DB1D9-FAE6-4BF6-9B11-6A4D65EFD39A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D2DB1D9-FAE6-4BF6-9B11-6A4D65EFD39A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{775C13FA-24BA-479E-B2DA-2C55E9CF20C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{775C13FA-24BA-479E-B2DA-2C55E9CF20C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{775C13FA-24BA-479E-B2DA-2C55E9CF20C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{775C13FA-24BA-479E-B2DA-2C55E9CF20C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +65,7 @@ Global
 		{119F99E8-9B87-43A1-959D-EB4BBC38A429} = {A9930D79-46A8-4F37-8952-43532357ACB2}
 		{89AC81FB-98D0-46FA-8303-FB82B0F28569} = {72132AEB-8C72-4DD2-89F2-08981C17E56E}
 		{3D2DB1D9-FAE6-4BF6-9B11-6A4D65EFD39A} = {A9930D79-46A8-4F37-8952-43532357ACB2}
+		{775C13FA-24BA-479E-B2DA-2C55E9CF20C8} = {A9930D79-46A8-4F37-8952-43532357ACB2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6F7488E2-C3FA-446D-AFFB-34260C7B3F28}

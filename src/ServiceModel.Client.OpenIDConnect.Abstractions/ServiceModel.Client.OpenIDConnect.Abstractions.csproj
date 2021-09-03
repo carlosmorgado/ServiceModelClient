@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -8,7 +8,7 @@
     <LangVersion>9.0</LangVersion>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <AssemblyName>Morgados.$(MSBuildProjectName)</AssemblyName>
-    <RootNamespace>Morgados.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <RootNamespace>Morgados.ServiceModel.Client.OpenIDConnect</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,14 +20,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
-    <PackageReference Include="System.ServiceModel.Http" Version="4.8.1" />
-    <PackageReference Include="System.ServiceModel.Primitives" Version="4.8.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ServiceModel.Client.OpenIDConnect.Abstractions\ServiceModel.Client.OpenIDConnect.Abstractions.csproj" />
-    <ProjectReference Include="..\ServiceModelClientFactory.Abstractions\ServiceModelClientFactory.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>
