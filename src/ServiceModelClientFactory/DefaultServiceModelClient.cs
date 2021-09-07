@@ -7,13 +7,15 @@ namespace Morgados.ServiceModelClientFactory
     internal sealed class DefaultServiceModelClient<TChannel> : IServiceModelClient<TChannel>
         where TChannel : class
     {
-        private readonly ChannelFactory<TChannel> channelFactory;
+        private readonly IChannelFactory<TChannel> channelFactory;
+        private readonly EndpointAddress remoteAddress;
         private TChannel? channel;
         private bool isDisposed;
 
-        public DefaultServiceModelClient(ChannelFactory<TChannel> channelFactory)
+        public DefaultServiceModelClient(IChannelFactory<TChannel> channelFactory, EndpointAddress remoteAddress)
         {
             this.channelFactory = channelFactory ?? throw new ArgumentNullException(nameof(channelFactory));
+            this.remoteAddress = remoteAddress ?? throw new ArgumentNullException(nameof(remoteAddress));
             this.isDisposed = false;
         }
 
@@ -41,7 +43,7 @@ namespace Morgados.ServiceModelClientFactory
 
         private TChannel CreateChannel()
         {
-            var channel = this.channelFactory.CreateChannel();
+            var channel = this.channelFactory.CreateChannel(this.remoteAddress);
             ((IChannel)channel).Open();
             return channel;
         }

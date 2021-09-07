@@ -31,31 +31,26 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(remoteAddress));
             }
 
-            //
-            // Core abstractions
-            //
-            services.TryAddSingleton<IServiceModelClientFactory, DefaultServiceModelClientFactory>();
-
             // Register channel factory
             if (configure is null)
             {
-                services.TryAddSingleton(serviceProvider => new ChannelFactory<TChannel>(binding, remoteAddress));
+                services.TryAddSingleton<IChannelFactory<TChannel>>(serviceProvider => new ChannelFactory<TChannel>(binding, null));
             }
             else
             {
-                services.TryAddSingleton(serviceProvider =>
+                services.TryAddSingleton<IChannelFactory<TChannel>>(serviceProvider =>
                 {
-                    var channelFactory = new ChannelFactory<TChannel>(binding, remoteAddress);
+                    var channelFactory = new ChannelFactory<TChannel>(binding, null);
                     configure?.Invoke(serviceProvider, channelFactory.Endpoint);
                     return channelFactory;
                 });
             }
 
             // Register service model client
-            services.TryAddTransient(
-                serviceProvider => serviceProvider
-                    .GetRequiredService<IServiceModelClientFactory>()
-                    .CreateServiceModelClient<TChannel>());
+            services.TryAddTransient<IServiceModelClient<TChannel>>(
+                serviceProvider => new DefaultServiceModelClient<TChannel>(
+                    serviceProvider.GetRequiredService<IChannelFactory<TChannel>>(),
+                    remoteAddress));
 
             return services;
         }

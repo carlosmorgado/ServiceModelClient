@@ -17,11 +17,11 @@ namespace Morgados.ServiceModelClientFactory.Tests
 
             var serviceCollection = default(ServiceCollection)!;
             var binding = Mock.Of<Binding>();
-            var enpointAddress = new EndpointAddress(EndpointAddress.NoneUri);
+            var remoteAddress = new EndpointAddress(EndpointAddress.NoneUri);
 
             // Act / Assert
 
-            Should.Throw<ArgumentNullException>(() => serviceCollection.AddServiceModelClient<ITestContract>(binding, enpointAddress));
+            Should.Throw<ArgumentNullException>(() => serviceCollection.AddServiceModelClient<ITestContract>(binding, remoteAddress));
         }
 
         [Fact]
@@ -31,11 +31,11 @@ namespace Morgados.ServiceModelClientFactory.Tests
 
             var serviceCollection = new ServiceCollection();
             var binding = default(Binding)!;
-            var enpointAddress = new EndpointAddress(EndpointAddress.NoneUri);
+            var remoteAddress = new EndpointAddress(EndpointAddress.NoneUri);
 
             // Act / Assert
 
-            Should.Throw<ArgumentNullException>(() => serviceCollection.AddServiceModelClient<ITestContract>(binding, enpointAddress));
+            Should.Throw<ArgumentNullException>(() => serviceCollection.AddServiceModelClient<ITestContract>(binding, remoteAddress));
         }
 
         [Fact]
@@ -45,54 +45,11 @@ namespace Morgados.ServiceModelClientFactory.Tests
 
             var serviceCollection = new ServiceCollection();
             var binding = Mock.Of<Binding>();
-            var enpointAddress = default(EndpointAddress)!;
+            var remoteAddress = default(EndpointAddress)!;
 
             // Act / Assert
 
-            Should.Throw<ArgumentNullException>(() => serviceCollection.AddServiceModelClient<ITestContract>(binding, enpointAddress));
-        }
-
-        [Fact]
-        public static void AddServiceModelClientOfTChannel_WithoutRegisteredIServiceModelClientFactory_RegistersDefaultServiceModelClientFactory()
-        {
-            // Arrange
-
-            var serviceCollection = new ServiceCollection();
-            var binding = Mock.Of<Binding>();
-            var enpointAddress = new EndpointAddress(EndpointAddress.NoneUri);
-
-            // Act
-
-            serviceCollection.AddServiceModelClient<ITestContract>(binding, enpointAddress);
-            var serviceProvider = serviceCollection.BuildServiceProvider();
-            var actual = serviceProvider.GetService<IServiceModelClientFactory>();
-
-            // Assert
-
-            actual.ShouldBeOfType<DefaultServiceModelClientFactory>();
-        }
-
-        [Fact]
-        public static void AddServiceModelClientOfTChannel_WithRegisteredIServiceModelClientFactory_DoesntRegisterDefaultServiceModelClientFactory()
-        {
-            // Arrange
-
-            var serviceCollection = new ServiceCollection();
-            var binding = Mock.Of<Binding>();
-            var enpointAddress = new EndpointAddress(EndpointAddress.NoneUri);
-            var expected = Mock.Of<IServiceModelClientFactory>();
-
-            serviceCollection.AddSingleton(expected);
-
-            // Act
-
-            serviceCollection.AddServiceModelClient<ITestContract>(binding, enpointAddress);
-            var serviceProvider = serviceCollection.BuildServiceProvider();
-            var actual = serviceProvider.GetService<IServiceModelClientFactory>();
-
-            // Assert
-
-            actual.ShouldBeSameAs(expected);
+            Should.Throw<ArgumentNullException>(() => serviceCollection.AddServiceModelClient<ITestContract>(binding, remoteAddress));
         }
 
         [Fact]
@@ -102,13 +59,13 @@ namespace Morgados.ServiceModelClientFactory.Tests
 
             var serviceCollection = new ServiceCollection();
             var binding = Mock.Of<Binding>();
-            var enpointAddress = new EndpointAddress(EndpointAddress.NoneUri);
+            var remoteAddress = new EndpointAddress(EndpointAddress.NoneUri);
 
             // Act
 
-            serviceCollection.AddServiceModelClient<ITestContract>(binding, enpointAddress);
+            serviceCollection.AddServiceModelClient<ITestContract>(binding, remoteAddress);
             using var serviceProvider = serviceCollection.BuildServiceProvider();
-            var actual = serviceProvider.GetService<ChannelFactory<ITestContract>>();
+            var actual = serviceProvider.GetService<IChannelFactory<ITestContract>>();
 
             // Assert
 
@@ -122,16 +79,16 @@ namespace Morgados.ServiceModelClientFactory.Tests
 
             var serviceCollection = new ServiceCollection();
             var binding = Mock.Of<Binding>();
-            var enpointAddress = new EndpointAddress(EndpointAddress.NoneUri);
+            var remoteAddress = new EndpointAddress(EndpointAddress.NoneUri);
 
-            using var expected = new ChannelFactory<ITestContract>(binding, enpointAddress);
+            var expected = Mock.Of<IChannelFactory<ITestContract>>();
             serviceCollection.AddSingleton(expected);
 
             // Act
 
-            serviceCollection.AddServiceModelClient<ITestContract>(binding, enpointAddress);
+            serviceCollection.AddServiceModelClient<ITestContract>(binding, remoteAddress);
             using var serviceProvider = serviceCollection.BuildServiceProvider();
-            var actual = serviceProvider.GetService<ChannelFactory<ITestContract>>();
+            var actual = serviceProvider.GetService<IChannelFactory<ITestContract>>();
 
             // Assert
 
@@ -145,16 +102,16 @@ namespace Morgados.ServiceModelClientFactory.Tests
 
             var serviceCollection = new ServiceCollection();
             var binding = Mock.Of<Binding>();
-            var enpointAddress = new EndpointAddress(EndpointAddress.NoneUri);
+            var remoteAddress = new EndpointAddress(EndpointAddress.NoneUri);
 
-            using var expected = new ChannelFactory<ITestContract>(binding, enpointAddress);
+            var expected = Mock.Of<IChannelFactory<ITestContract>>();
             serviceCollection.AddSingleton(expected);
 
             // Act
 
-            serviceCollection.AddServiceModelClient<ITestContract>(binding, enpointAddress, (sp, se) => { });
+            serviceCollection.AddServiceModelClient<ITestContract>(binding, remoteAddress, (sp, se) => { });
             using var serviceProvider = serviceCollection.BuildServiceProvider();
-            var actual = serviceProvider.GetService<ChannelFactory<ITestContract>>();
+            var actual = serviceProvider.GetService<IChannelFactory<ITestContract>>();
 
             // Assert
 
@@ -162,21 +119,21 @@ namespace Morgados.ServiceModelClientFactory.Tests
         }
 
         [Fact]
-        public static void AddServiceModelClientOfTChannel_RegisteredWithConfiguratio_ConfigurationExecutedOnceAndOnlyOnce()
+        public static void AddServiceModelClientOfTChannel_RegisteredWithConfiguration_ConfigurationExecutedOnceAndOnlyOnce()
         {
             // Arrange
 
             var serviceCollection = new ServiceCollection();
             var binding = Mock.Of<Binding>();
-            var enpointAddress = new EndpointAddress(EndpointAddress.NoneUri);
+            var remoteAddress = new EndpointAddress(EndpointAddress.NoneUri);
             var configurationExecuted = 0;
 
             // Act
 
-            serviceCollection.AddServiceModelClient<ITestContract>(binding, enpointAddress, (sp, se) => configurationExecuted++);
+            serviceCollection.AddServiceModelClient<ITestContract>(binding, remoteAddress, (sp, se) => configurationExecuted++);
             using var serviceProvider = serviceCollection.BuildServiceProvider();
-            serviceProvider.GetService<ChannelFactory<ITestContract>>();
-            serviceProvider.GetService<ChannelFactory<ITestContract>>();
+            serviceProvider.GetService<IChannelFactory<ITestContract>>();
+            serviceProvider.GetService<IChannelFactory<ITestContract>>();
 
             // Assert
 
@@ -190,24 +147,23 @@ namespace Morgados.ServiceModelClientFactory.Tests
 
             var serviceCollection = new ServiceCollection();
             var binding = Mock.Of<Binding>();
-            var enpointAddress = new EndpointAddress(EndpointAddress.NoneUri);
+            var remoteAddress = new EndpointAddress(EndpointAddress.NoneUri);
 
-            var expected = Mock.Of<IServiceModelClient<ITestContract>>();
-            var serviceModelClientFactoryMock = new Mock<IServiceModelClientFactory>();
-            serviceModelClientFactoryMock.Setup(m => m.CreateServiceModelClient<ITestContract>()).Returns(expected);
+            var expected = Mock.Of<ITestContract>();
+            var channelFactoryMock = new Mock<IChannelFactory<ITestContract>>();
+            channelFactoryMock.Setup(m => m.CreateChannel(remoteAddress)).Returns(expected);
 
-            serviceCollection.AddSingleton(serviceModelClientFactoryMock.Object);
+            serviceCollection.AddSingleton(channelFactoryMock.Object);
 
             // Act
 
-            serviceCollection.AddServiceModelClient<ITestContract>(binding, enpointAddress);
+            serviceCollection.AddServiceModelClient<ITestContract>(binding, remoteAddress);
             var serviceProvider = serviceCollection.BuildServiceProvider();
             var actual = serviceProvider.GetService<IServiceModelClient<ITestContract>>();
 
             // Assert
 
-            serviceModelClientFactoryMock.Verify(m => m.CreateServiceModelClient<ITestContract>(), Times.Once());
-            actual.ShouldBeSameAs(expected);
+            actual.ShouldNotBeNull();
         }
     }
 }
