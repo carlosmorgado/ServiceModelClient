@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Threading.Tasks;
 
 namespace Morgados.ServiceModelClientFactory
 {
@@ -32,6 +33,31 @@ namespace Morgados.ServiceModelClientFactory
                 else
                 {
                     clientChannel.Close();
+                }
+
+                clientChannel.Dispose();
+            }
+
+            this.channel = null!;
+            this.isDisposed = true;
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            if (!this.isDisposed && this.channel is IClientChannel clientChannel)
+            {
+                if (clientChannel.State == CommunicationState.Faulted)
+                {
+                    clientChannel.Abort();
+                }
+                else
+                {
+                    await Task.Factory.FromAsync(
+                        clientChannel.BeginClose(null, null),
+                        clientChannel.EndClose,
+                        TaskCreationOptions.None,
+                        TaskScheduler.Default)
+                        .ConfigureAwait(false);
                 }
 
                 clientChannel.Dispose();

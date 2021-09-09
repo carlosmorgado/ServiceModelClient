@@ -2,7 +2,7 @@
 
 namespace Morgados.ServiceModelClientFactory
 {
-    public interface IServiceModelClient<TChannel> : IDisposable
+    public interface IServiceModelClient<TChannel> : IDisposable, IAsyncDisposable
         where TChannel : class
     {
         TChannel Channel { get; }

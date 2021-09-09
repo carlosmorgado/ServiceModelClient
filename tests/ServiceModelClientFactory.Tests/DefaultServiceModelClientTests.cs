@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Threading;
+using System.Threading.Tasks;
 using Moq;
 using Shouldly;
 using Xunit;
@@ -134,6 +136,67 @@ namespace Morgados.ServiceModelClientFactory.Tests
             // Act
 
             target.Dispose();
+
+            // Assert
+
+            clientChannelMock.Verify(cc => cc.Abort(), Times.Once());
+            clientChannelMock.Verify(cc => cc.Dispose(), Times.Once());
+        }
+
+        [Theory]
+        [InlineData(CommunicationState.Opening)]
+        [InlineData(CommunicationState.Opened)]
+        [InlineData(CommunicationState.Closing)]
+        [InlineData(CommunicationState.Closed)]
+        public static async Task DisposeAsync_WhenNotDisposedAndNotFaulted_InvokesCloseAndDispose(CommunicationState state)
+        {
+            // Arrange
+
+            var remoteAddress = new EndpointAddress(EndpointAddress.NoneUri);
+
+            using var asyncWaitHandle = new ManualResetEvent(true);
+            var asyncResult = Mock.Of<IAsyncResult>(ar => ar.AsyncWaitHandle == asyncWaitHandle);
+            var expectedMock = new Mock<ITestContract>();
+            var clientChannelMock = expectedMock.As<IClientChannel>();
+            clientChannelMock.Setup(cc => cc.BeginClose(null, null)).Returns(asyncResult);
+
+            var channelFactoryMock = new Mock<IChannelFactory<ITestContract>>();
+            channelFactoryMock.Setup(cf => cf.CreateChannel(remoteAddress)).Returns(expectedMock.Object);
+
+            var target = new DefaultServiceModelClient<ITestContract>(channelFactoryMock.Object, remoteAddress);
+            var actual = target.Channel;
+
+            // Act
+
+            await target.DisposeAsync();
+
+            // Assert
+
+            clientChannelMock.Verify(cc => cc.BeginClose(null, null), Times.Once());
+            clientChannelMock.Verify(cc => cc.EndClose(asyncResult), Times.Once());
+            clientChannelMock.Verify(cc => cc.Dispose(), Times.Once());
+        }
+
+        [Fact]
+        public static async Task DisposeAsync_WhenNotDisposedAndFaulted_InvokesAbortAndDispose()
+        {
+            // Arrange
+
+            var remoteAddress = new EndpointAddress(EndpointAddress.NoneUri);
+
+            var expectedMock = new Mock<ITestContract>();
+            var clientChannelMock = expectedMock.As<IClientChannel>();
+            clientChannelMock.Setup(cc => cc.State).Returns(CommunicationState.Faulted);
+
+            var channelFactoryMock = new Mock<IChannelFactory<ITestContract>>();
+            channelFactoryMock.Setup(cf => cf.CreateChannel(remoteAddress)).Returns(expectedMock.Object);
+
+            var target = new DefaultServiceModelClient<ITestContract>(channelFactoryMock.Object, remoteAddress);
+            var actual = target.Channel;
+
+            // Act
+
+            await target.DisposeAsync();
 
             // Assert
 
